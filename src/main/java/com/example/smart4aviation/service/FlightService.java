@@ -17,6 +17,8 @@ public class FlightService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+
+    //Zwraca wszystkie loty
     public List<Flight> getAll(){
         TypeReference<List<Flight>> typeReference = new TypeReference<List<Flight>>() {};
         InputStream inputStream = TypeReference.class.getResourceAsStream("/json/flight.json");
@@ -30,6 +32,7 @@ public class FlightService {
         return null;
     }
 
+    //Funkcja zwraca obiekt ResponseCargo, który zawiera całkowitą wagę ładunku, bagaży oraz łączną całkowitą wagę tych rzeczy na pokładzie
     public ResponseCargo getCargo(int flightNumber, Date flightDate){
         List<Flight> flights = getFlightsFromJSON();
         int totalCargoWeights=0;
@@ -50,6 +53,7 @@ public class FlightService {
 
 
 
+    //Zwraca obiekt ResponseFlights, który zawiera ilość lotów przylatujących oraz odlatujących z danego portu oraz tak samo ilość bagaży przylatujących i odlatujących z portu.
     public ResponseFlights getFlight(String iataCode, Date flightDate){
         List<Flight> flights = getFlightsFromJSON();
         int flightsArriving=0;
@@ -73,6 +77,7 @@ public class FlightService {
 
 
 
+    //Zwraca ilość wszystkich bagaży
     private int getBaggage(List<Flight> flights){
         TypeReference<List<CargoEntity>> typeReference = new TypeReference<List<CargoEntity>>() {};
         InputStream inputStream = TypeReference.class.getResourceAsStream("/json/cargo.json");
@@ -102,6 +107,8 @@ public class FlightService {
 
     }
 
+
+    //Zwraca całkowitą wagę wszystkich bagaży lub ładunku danego lotu
     private int getTotalWeight(List<Flight> flights, String type){
         TypeReference<List<CargoEntity>> typeReference = new TypeReference<List<CargoEntity>>() {};
         InputStream inputStream = TypeReference.class.getResourceAsStream("/json/cargo.json");
@@ -145,6 +152,8 @@ public class FlightService {
         }
         return result;
     }
+
+    //Pobiera wszystkie loty z pliku Json
     private List<Flight> getFlightsFromJSON() {
         TypeReference<List<Flight>> typeReference = new TypeReference<List<Flight>>() {};
         InputStream inputStream = TypeReference.class.getResourceAsStream("/json/flight.json");
@@ -159,6 +168,7 @@ public class FlightService {
     }
 
 
+    //Porownuje daty
     private boolean compareDate(Date dateJson, Date dateReq){
         if(dateJson.getDate()==dateReq.getDate() && dateJson.getMonth()==dateReq.getMonth() && dateJson.getYear()==dateReq.getYear()){
             return true;
